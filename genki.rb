@@ -7,6 +7,7 @@ require 'tweetstream'
 log = Logger.new(STDOUT)
 STDOUT.sync = true
 
+# for REST API
 client = Twitter::Client.new(
   :consumer_key       => ENV['TWITTER_CONSUMER_KEY'],
   :consumer_secret    => ENV['TWITTER_CONSUMER_SECRET'],
@@ -15,6 +16,7 @@ client = Twitter::Client.new(
 )
 profile = client.verify_credentials
 
+# for Streaming API
 TweetStream.configure do |config|
   config.consumer_key       = ENV['TWITTER_CONSUMER_KEY']
   config.consumer_secret    = ENV['TWITTER_CONSUMER_SECRET']
@@ -30,6 +32,7 @@ end
 stream.on_inited do
   log.info('init')
 end
+# auto follow
 stream.on_event(:follow) do |event|
   if event[:target][:id] == profile.id
     log.info('followed from @%s' % event[:source][:screen_name])
@@ -39,11 +42,11 @@ stream.on_event(:follow) do |event|
   end
 end
 stream.userstream do |status|
-  log.info('status from @%s: %s' % [status.from_user, status.text])
   next if rand(3) == 0
   next if status.retweet?
   next if status.reply?
 
+  log.info('status from @%s: %s' % [status.from_user, status.text])
   shinpai = '@%s ' % status.from_user
   case status.text
   when /病/
@@ -59,7 +62,6 @@ stream.userstream do |status|
     next
   end
 
-  log.info(shinpai + 'げんきだして！')
   tweet = client.update(shinpai + 'げんきだして！', {
       :in_reply_to_status_id => status.id,
   })

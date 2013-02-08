@@ -59,7 +59,7 @@ stream.userstream do |status|
     shinpai += '心折れてるの？'
   when /つらい/
     shinpai += 'つらくても、'
-  when /(\.\.\.|。。。|orz)/
+  when /(\.\.\.|…|。。。|orz)/
   else
     next
   end

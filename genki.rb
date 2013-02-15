@@ -12,7 +12,7 @@ client = Twitter::Client.new(
   :consumer_key       => ENV['TWITTER_CONSUMER_KEY'],
   :consumer_secret    => ENV['TWITTER_CONSUMER_SECRET'],
   :oauth_token        => ENV['TWITTER_ACCESS_TOKEN'],
-  :oauth_token_secret => ENV['TWITTER_ACCESS_TOKEN_SECRET'],
+  :oauth_token_secret => ENV['TWITTER_ACCESS_TOKEN_SECRET']
 )
 profile = client.verify_credentials
 
@@ -63,7 +63,7 @@ stream.userstream do |status|
     shinpai += 'つらくても、'
   when /死にたい/
     shinpai += '死なないで、'
-  when /(\.\.\.|…|。。。|orz)/
+  when /(…|。。。|orz)/
   else
     next
   end

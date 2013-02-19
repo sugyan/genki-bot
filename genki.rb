@@ -68,10 +68,13 @@ stream.userstream do |status|
     next
   end
 
-  tweet = client.update(shinpai + 'げんきだして！', {
-      :in_reply_to_status_id => status.id,
-  })
-  if tweet
-    log.info('tweeted: %s' % tweet.text)
+  # 適当に間隔あける
+  EM.add_timer(rand(5) + 5) do
+    tweet = client.update(shinpai + 'げんきだして！', {
+        :in_reply_to_status_id => status.id,
+      })
+    if tweet
+      log.info('tweeted: %s' % tweet.text)
+    end
   end
 end

@@ -24,13 +24,6 @@ TweetStream.configure do |config|
 end
 stream = TweetStream::Client.new
 
-stream.on_error do |err|
-  log.error(err)
-end
-stream.on_inited do
-  log.info('init')
-end
-
 EM.run do
   # auto follow and unfollow (every 5 minutes)
   EM.add_periodic_timer(300) do
@@ -54,8 +47,13 @@ EM.run do
     end
   end
 
+  stream.on_error do |err|
+    log.error(err)
+  end
+  stream.on_inited do
+    log.info('init')
+  end
   stream.userstream do |status|
-    next if rand(3) == 0
     next if status.retweet?
     next if status.reply?
 

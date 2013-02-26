@@ -70,6 +70,8 @@ EM.run do
       shinpai += '心折れてるの？'
     when /(?:寂|淋)し/
       shinpai += 'さびしいの？'
+    when /弱っ/
+      shinpai += '弱ってるの？'
     when /つらい/
       shinpai += 'つらくても、'
     when /死にたい/

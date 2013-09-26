@@ -83,7 +83,8 @@ EM.run do
 
     # 適当に間隔あける
     EM.add_timer(rand(5) + 5) do
-      tweet = rest.update(shinpai + 'げんきだして！', {
+      hagemashi = rand > 0.05 ? 'げんきだして！' : 'まぁげんきだせやｗｗｗｗｗ'
+      tweet = rest.update(shinpai + hagemashi, {
           :in_reply_to_status_id => status.id,
         })
       if tweet

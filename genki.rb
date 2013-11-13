@@ -62,7 +62,7 @@ EM.run do
     case status.text
     when /病/
       shinpai += '病んでるの？'
-    when /疲/
+    when /疲(?!れ(?:様|さ(?:ま|ん)))/
       shinpai += '疲れてるの？'
     when /凹/
       shinpai += '凹んでるの？'

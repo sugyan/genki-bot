@@ -60,6 +60,8 @@ EM.run do
     log.info('status from @%s: %s' % [status.from_user, status.text])
     shinpai = '@%s ' % status.from_user
     case status.text
+    when /https?:\/\//
+      next
     when /病/
       shinpai += '病んでるの？'
     when /疲(?!れ(?:様|さ(?:ま|ん)))/

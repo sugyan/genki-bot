@@ -62,8 +62,6 @@ EM.run do
     case status.text
     when /https?:\/\//
       next
-    when /病/
-      shinpai += '病んでるの？'
     when /疲(?!れ(?:様|さ(?:ま|ん)))/
       shinpai += '疲れてるの？'
     when /凹/

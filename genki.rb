@@ -25,7 +25,7 @@ end
 stream = TweetStream::Client.new
 
 EM.error_handler do |e|
-  log.error(e.message)
+  raise e.message
 end
 EM.run do
   # auto follow and unfollow (every 5 minutes)
@@ -35,17 +35,27 @@ EM.run do
     to_follow   = followers - friends
     to_unfollow = friends - followers
     # follow
+    log.info('to follow: %s' % to_follow.inspect)
     to_follow.each do |id|
       log.info('follow %s' % id)
-      if rest.follow(id)
-        log.info('done.')
+      begin
+        if rest.follow(id)
+          log.info('done.')
+        end
+      rescue => e
+        log.error(e)
       end
     end
     # unfollow
+    log.info('to unfollow: %s' % to_unfollow.inspect)
     to_unfollow.each do |id|
       log.info('unfollow %s' % id)
-      if rest.unfollow(id)
-        log.info('done.')
+      begin
+        if rest.unfollow(id)
+          log.info('done.')
+        end
+      rescue => e
+        log.error(e)
       end
     end
   end
@@ -84,11 +94,15 @@ EM.run do
     # 適当に間隔あける
     EM.add_timer(rand(5) + 5) do
       hagemashi = rand > 0.05 ? 'げんきだして！' : 'まぁげんきだせやｗｗｗｗｗ'
-      tweet = rest.update(shinpai + hagemashi, {
-          :in_reply_to_status_id => status.id,
-        })
-      if tweet
-        log.info('tweeted: %s' % tweet.text)
+      begin
+        tweet = rest.update(shinpai + hagemashi, {
+            :in_reply_to_status_id => status.id,
+          })
+        if tweet
+          log.info('tweeted: %s' % tweet.text)
+        end
+      rescue => e
+        log.error(e)
       end
     end
   end

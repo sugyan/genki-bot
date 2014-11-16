@@ -94,10 +94,14 @@ EM.run do
     # 適当に間隔あける
     EM.add_timer(rand(5) + 5) do
       hagemashi = rand > 0.05 ? 'げんきだして！' : 'まぁげんきだせやｗｗｗｗｗ'
+      message = shinpai + hagemashi
+      if rand < (status.from_user == 'naoya_ito' ? 0.01 : 0.0001)
+        message = '@%s うるせえ寝てろ' % status.from_user
+      end
       begin
-        tweet = rest.update(shinpai + hagemashi, {
-            :in_reply_to_status_id => status.id,
-          })
+        tweet = rest.update(message, {
+          :in_reply_to_status_id => status.id,
+        })
         if tweet
           log.info('tweeted: %s' % tweet.text)
         end

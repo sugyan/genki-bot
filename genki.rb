@@ -87,7 +87,7 @@ EM.run do
     when /死にたい/
       shinpai += '死なないで、'
     when /お腹痛い/
-      shinpai += 'トイレ行って'
+      shinpai += 'トイレ行って、'
     when /(?:。。。|orz)/
     else
       next

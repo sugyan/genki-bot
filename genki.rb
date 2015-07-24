@@ -28,15 +28,15 @@ EM.error_handler do |e|
   raise e.message
 end
 EM.run do
-  # auto follow and unfollow (every 5 minutes)
-  EM.add_periodic_timer(300) do
+  # auto follow and unfollow (every 60 minutes)
+  EM.add_periodic_timer(3600) do
     friends   = rest.friend_ids.all
     followers = rest.follower_ids.all
     to_follow   = followers - friends
     to_unfollow = friends - followers
     # follow
     log.info('to follow: %s' % to_follow.inspect)
-    to_follow.each do |id|
+    to_follow.shuffle.each do |id|
       log.info('follow %s' % id)
       begin
         if rest.follow(id)
@@ -45,10 +45,11 @@ EM.run do
       rescue => e
         log.error(e)
       end
+      break
     end
     # unfollow
     log.info('to unfollow: %s' % to_unfollow.inspect)
-    to_unfollow.each do |id|
+    to_unfollow.shuffle.each do |id|
       log.info('unfollow %s' % id)
       begin
         if rest.unfollow(id)
@@ -57,6 +58,7 @@ EM.run do
       rescue => e
         log.error(e)
       end
+      break
     end
   end
 
